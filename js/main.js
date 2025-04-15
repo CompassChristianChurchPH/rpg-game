@@ -3,38 +3,82 @@ import { createPlayer, getPlayerStats } from './player.js';
 import { saveGameData } from './storage.js';
 
 let player = null;
+let enemy = null;
 
 window.startGame = function (className) {
   player = createPlayer(className);
+  enemy = generateEnemy();
   document.getElementById('start-screen').style.display = 'none';
   document.getElementById('game-ui').style.display = 'block';
-  updatePlayerStats();
+  updateUI();
 };
+
+function generateEnemy() {
+  return {
+    name: 'Goblin',
+    hp: 50,
+    str: 10,
+  };
+}
 
 window.attack = function () {
   const log = document.getElementById('battle-log');
-  log.innerHTML += `<p>You attack the enemy! ⚔️</p>`;
+  const damage = Math.max(player.str - 3, 5);
+  enemy.hp -= damage;
+  log.innerHTML += `<p>You attack the ${enemy.name} for ${damage} damage! ⚔️</p>`;
+  checkBattleState();
 };
 
 window.useSkill = function () {
+  if (player.mp < 10) {
+    alert('Not enough MP!');
+    return;
+  }
   const log = document.getElementById('battle-log');
-  log.innerHTML += `<p>You used a skill! ✨</p>`;
+  const damage = Math.max(player.int * 2, 15);
+  enemy.hp -= damage;
+  player.mp -= 10;
+  log.innerHTML += `<p>You used a skill and dealt ${damage} magic damage! ✨</p>`;
+  checkBattleState();
 };
 
 window.useItem = function () {
   const log = document.getElementById('battle-log');
-  log.innerHTML += `<p>You used an item! 🧪</p>`;
+  if (player.hp < player.maxHp) {
+    player.hp = Math.min(player.maxHp, player.hp + 30);
+    log.innerHTML += `<p>You used a health potion and recovered 30 HP. 🧪</p>`;
+  } else {
+    log.innerHTML += `<p>Your HP is already full.</p>`;
+  }
+  enemyTurn();
 };
 
-window.saveGame = function () {
-  saveGameData(player);
-  alert("Game saved!");
-};
+function enemyTurn() {
+  if (enemy.hp > 0) {
+    const damage = Math.max(enemy.str - player.def / 2, 3);
+    player.hp -= damage;
+    const log = document.getElementById('battle-log');
+    log.innerHTML += `<p>The ${enemy.name} hits you for ${damage} damage! 💢</p>`;
+    checkBattleState();
+  }
+}
 
-function updatePlayerStats() {
-  const statsDiv = document.getElementById('player-stats');
+function checkBattleState() {
+  if (enemy.hp <= 0) {
+    document.getElementById('battle-log').innerHTML += `<p>🎉 You defeated the ${enemy.name}!</p>`;
+    document.getElementById('actions').style.display = 'none';
+  } else if (player.hp <= 0) {
+    document.getElementById('battle-log').innerHTML += `<p>💀 You have been defeated...</p>`;
+    document.getElementById('actions').style.display = 'none';
+  } else {
+    enemyTurn();
+  }
+  updateUI();
+}
+
+function updateUI() {
   const stats = getPlayerStats(player);
-  statsDiv.innerHTML = `
+  document.getElementById('player-stats').innerHTML = `
     <strong>${player.class} - Level ${player.level}</strong><br>
     HP: ${player.hp} / ${player.maxHp} <br>
     MP: ${player.mp} / ${player.maxMp} <br>
@@ -42,3 +86,8 @@ function updatePlayerStats() {
     AGI: ${player.agi} | INT: ${player.int}
   `;
 }
+
+window.saveGame = function () {
+  saveGameData(player);
+  alert('Game saved!');
+};

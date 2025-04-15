@@ -2,31 +2,43 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Legacy of Elarion</title>
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
-  <div id="start-screen">
-    <h1>Legacy of Elarion</h1>
-    <p>Select your class to begin:</p>
-    <div id="class-select">
-      <button onclick="startGame('Knight')">🛡 Knight</button>
-      <button onclick="startGame('Mage')">🧙 Mage</button>
-      <button onclick="startGame('Rogue')">🗡 Rogue</button>
-    </div>
-  </div>
+  <header>
+    <h1>⚔️ Legacy of Elarion</h1>
+  </header>
 
-  <div id="game-ui" style="display:none">
-    <div id="player-stats"></div>
-    <div id="battle-log"></div>
-    <div id="actions">
-      <button onclick="attack()">Attack</button>
-      <button onclick="useSkill()">Skill</button>
-      <button onclick="useItem()">Item</button>
-      <button onclick="saveGame()">Save Game</button>
-    </div>
-  </div>
+  <main>
+    <section id="player-info">
+      <h2>👤 Player Info</h2>
+      <p><strong>Name:</strong> <span id="player-name">--</span></p>
+      <p><strong>Class:</strong> <span id="player-class">--</span></p>
+      <p><strong>Level:</strong> <span id="player-level">1</span></p>
+      <p><strong>HP:</strong> <span id="player-hp">100</span></p>
+      <p><strong>Attack:</strong> <span id="player-attack">10</span></p>
+      <p><strong>EXP:</strong> <span id="player-exp">0</span></p>
+    </section>
+
+    <section id="inventory">
+      <h2>🎒 Inventory</h2>
+      <p id="inventory-display">Potions: 0</p>
+    </section>
+
+    <section id="battle">
+      <h2>⚔️ Battle Arena</h2>
+      <div id="battle-log">No battle yet...</div>
+      <button id="start-btn">Start Battle</button>
+      <button id="attack-btn">Attack</button>
+      <button id="potion-btn">Use Potion</button>
+    </section>
+  </main>
+
+  <footer>
+    <p>Made by Bryan Gutierrez Ablao | RPG Game on GitHub</p>
+  </footer>
 
   <script type="module" src="js/main.js"></script>
 </body>

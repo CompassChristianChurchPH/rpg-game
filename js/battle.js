@@ -1,44 +1,47 @@
 // battle.js
 
-import { player } from './player.js';
-import { saveGame } from './storage.js';
+import { player, gainExp } from './player.js';
 
-export const enemy = {
-  name: "Goblin",
-  hp: 50,
-  attack: 8,
-};
+const enemies = [
+  { name: "Slime", hp: 30, attack: 5, exp: 10 },
+  { name: "Goblin", hp: 50, attack: 10, exp: 20 },
+  { name: "Wolf", hp: 70, attack: 15, exp: 30 }
+];
+
+let currentEnemy = null;
 
 export function startBattle() {
-  const battleLog = document.getElementById("battle-log");
-  battleLog.innerHTML = `A wild ${enemy.name} appears!`;
-
-  document.getElementById("attack-btn").onclick = () => {
-    playerAttack(battleLog);
-  };
+  currentEnemy = { ...enemies[Math.floor(Math.random() * enemies.length)] };
+  log(`A wild ${currentEnemy.name} appears with ${currentEnemy.hp} HP!`);
 }
 
-function playerAttack(log) {
-  const damage = Math.floor(Math.random() * player.stats.attack + 1);
-  enemy.hp -= damage;
-  log.innerHTML += `<br>You dealt ${damage} damage to ${enemy.name}.`;
-
-  if (enemy.hp <= 0) {
-    log.innerHTML += `<br>You defeated the ${enemy.name}!`;
-    player.stats.exp += 10;
-    saveGame();
+export function attackEnemy() {
+  if (!currentEnemy) {
+    log("No enemy to attack!");
     return;
   }
 
-  enemyAttack(log);
-}
+  currentEnemy.hp -= player.stats.attack;
+  log(`You attacked ${currentEnemy.name} for ${player.stats.attack} damage.`);
 
-function enemyAttack(log) {
-  const damage = Math.floor(Math.random() * enemy.attack + 1);
-  player.stats.hp -= damage;
-  log.innerHTML += `<br>${enemy.name} dealt ${damage} damage to you.`;
+  if (currentEnemy.hp <= 0) {
+    log(`You defeated ${currentEnemy.name}! +${currentEnemy.exp} EXP`);
+    gainExp(currentEnemy.exp);
+    currentEnemy = null;
+    return;
+  }
+
+  // Enemy attacks back
+  player.stats.hp -= currentEnemy.attack;
+  log(`${currentEnemy.name} attacked you for ${currentEnemy.attack} damage.`);
 
   if (player.stats.hp <= 0) {
-    log.innerHTML += `<br>You were defeated. Game over!`;
+    log("You were defeated! Game over.");
+    player.stats.hp = 0;
   }
+}
+
+function log(message) {
+  const logDiv = document.getElementById("battle-log");
+  logDiv.innerHTML = `<p>${message}</p>` + logDiv.innerHTML;
 }

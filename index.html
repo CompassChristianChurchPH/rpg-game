@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Legacy of Elarion</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div id="start-screen">
+    <h1>Legacy of Elarion</h1>
+    <p>Select your class to begin:</p>
+    <div id="class-select">
+      <button onclick="startGame('Knight')">🛡 Knight</button>
+      <button onclick="startGame('Mage')">🧙 Mage</button>
+      <button onclick="startGame('Rogue')">🗡 Rogue</button>
+    </div>
+  </div>
+
+  <div id="game-ui" style="display:none">
+    <div id="player-stats"></div>
+    <div id="battle-log"></div>
+    <div id="actions">
+      <button onclick="attack()">Attack</button>
+      <button onclick="useSkill()">Skill</button>
+      <button onclick="useItem()">Item</button>
+      <button onclick="saveGame()">Save Game</button>
+    </div>
+  </div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

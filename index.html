@@ -3,41 +3,48 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Legacy of Elarion</title>
+  <title>RPG Adventure Game</title>
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
+
   <header>
-    <h1>⚔️ Legacy of Elarion</h1>
+    <h1>🗡️ RPG Adventure</h1>
+    <p>Welcome to your quest!</p>
   </header>
 
   <main>
-    <section id="player-info">
+    <section>
       <h2>👤 Player Info</h2>
-      <p><strong>Name:</strong> <span id="player-name">--</span></p>
-      <p><strong>Class:</strong> <span id="player-class">--</span></p>
-      <p><strong>Level:</strong> <span id="player-level">1</span></p>
-      <p><strong>HP:</strong> <span id="player-hp">100</span></p>
-      <p><strong>Attack:</strong> <span id="player-attack">10</span></p>
-      <p><strong>EXP:</strong> <span id="player-exp">0</span></p>
+      <p><strong>Name:</strong> <span id="player-name"></span></p>
+      <p><strong>Level:</strong> <span id="player-level"></span></p>
+      <p><strong>HP:</strong> <span id="player-hp"></span></p>
+      <p><strong>Attack:</strong> <span id="player-attack"></span></p>
+      <p><strong>EXP:</strong> <span id="player-exp"></span></p>
+      <p><strong>Inventory:</strong> <span id="player-inventory"></span></p>
     </section>
 
-    <section id="inventory">
-      <h2>🎒 Inventory</h2>
-      <p id="inventory-display">Potions: 0</p>
-    </section>
-
-    <section id="battle">
-      <h2>⚔️ Battle Arena</h2>
-      <div id="battle-log">No battle yet...</div>
+    <section>
+      <h2>⚔️ Battle</h2>
       <button id="start-btn">Start Battle</button>
       <button id="attack-btn">Attack</button>
-      <button id="potion-btn">Use Potion</button>
+      <button id="use-potion-btn">Use Potion</button>
+    </section>
+
+    <section>
+      <h2>💾 Save / Load</h2>
+      <button id="save-btn">Save Game</button>
+      <button id="load-btn">Load Game</button>
+    </section>
+
+    <section>
+      <h2>📜 Battle Log</h2>
+      <div id="battle-log" style="max-height: 200px; overflow-y: auto;"></div>
     </section>
   </main>
 
   <footer>
-    <p>Made by Bryan Gutierrez Ablao | RPG Game on GitHub</p>
+    <p>&copy; 2025 RPG Adventure Game | Created by ChatGPT & You</p>
   </footer>
 
   <script type="module" src="js/main.js"></script>

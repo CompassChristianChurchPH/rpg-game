@@ -1,39 +1,64 @@
 // main.js
 
-import { initPlayer, player } from './player.js';
-import { loadGame, saveGame } from './storage.js';
-import { startBattle } from './battle.js';
+import { player, setPlayerName, levelUp } from './player.js';
+import { startBattle, attackEnemy } from './battle.js';
 import { usePotion, showInventory } from './inventory.js';
+import { saveGame, loadGame } from './storage.js';
+
+function initGame() {
+  const savedData = loadGame();
+  if (savedData) {
+    Object.assign(player, savedData);
+    log(`Welcome back, ${player.name}!`);
+  } else {
+    const name = prompt("Enter your character's name:");
+    setPlayerName(name || "Hero");
+    log(`Welcome, ${player.name}! Let the adventure begin.`);
+  }
+
+  updateUI();
+}
 
 function updateUI() {
   document.getElementById("player-name").textContent = player.name;
-  document.getElementById("player-class").textContent = player.class;
-  document.getElementById("player-level").textContent = player.stats.level;
+  document.getElementById("player-level").textContent = player.level;
   document.getElementById("player-hp").textContent = player.stats.hp;
   document.getElementById("player-attack").textContent = player.stats.attack;
-  document.getElementById("player-exp").textContent = player.stats.exp;
+  document.getElementById("player-exp").textContent = `${player.exp} / ${player.nextExp}`;
 
-  const inventory = showInventory();
-  document.getElementById("inventory-display").innerHTML = `Potions: ${inventory.potion}`;
+  const inv = showInventory();
+  document.getElementById("player-inventory").textContent = `Potion x${inv.potion}`;
 }
 
-window.onload = () => {
-  initPlayer();
-  loadGame();
+function log(message) {
+  const logDiv = document.getElementById("battle-log");
+  logDiv.innerHTML = `<p>${message}</p>` + logDiv.innerHTML;
+}
+
+document.getElementById("start-btn").addEventListener("click", () => {
+  startBattle();
+});
+
+document.getElementById("attack-btn").addEventListener("click", () => {
+  attackEnemy();
   updateUI();
+});
 
-  document.getElementById("start-btn").onclick = () => {
-    startBattle();
-    updateUI();
-  };
+document.getElementById("use-potion-btn").addEventListener("click", () => {
+  usePotion();
+  updateUI();
+});
 
-  document.getElementById("attack-btn").onclick = () => {
-    // Attack logic is handled in battle.js, so just update UI
-    updateUI();
-  };
+document.getElementById("save-btn").addEventListener("click", () => {
+  saveGame();
+  log("Game saved!");
+});
 
-  document.getElementById("potion-btn").onclick = () => {
-    usePotion();
-    updateUI();
-  };
+document.getElementById("load-btn").addEventListener("click", () => {
+  initGame();
+  updateUI();
+});
+
+window.onload = () => {
+  initGame();
 };

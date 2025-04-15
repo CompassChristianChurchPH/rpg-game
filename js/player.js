@@ -21,7 +21,10 @@ export function createPlayer(className) {
         def: 15,
         agi: 5,
         int: 5,
-        skills: ['Shield Bash', 'Taunt'],
+        skills: [
+          { name: 'Shield Bash', damage: 40, cost: 10 },
+          { name: 'Taunt', effect: 'Increase defense of allies' }
+        ],
       };
     case 'Mage':
       return {
@@ -35,7 +38,10 @@ export function createPlayer(className) {
         def: 5,
         agi: 10,
         int: 25,
-        skills: ['Fireball', 'Ice Storm'],
+        skills: [
+          { name: 'Fireball', damage: 50, cost: 20 },
+          { name: 'Ice Storm', damage: 60, cost: 30 }
+        ],
       };
     case 'Rogue':
       return {
@@ -49,7 +55,10 @@ export function createPlayer(className) {
         def: 10,
         agi: 20,
         int: 10,
-        skills: ['Backstab', 'Smoke Bomb'],
+        skills: [
+          { name: 'Backstab', damage: 60, cost: 15 },
+          { name: 'Smoke Bomb', effect: 'Dodge next attack' }
+        ],
       };
     default:
       return baseStats;

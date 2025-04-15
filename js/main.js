@@ -65,7 +65,9 @@ function enemyTurn() {
 
 function checkBattleState() {
   if (enemy.hp <= 0) {
-    document.getElementById('battle-log').innerHTML += `<p>🎉 You defeated the ${enemy.name}!</p>`;
+    const log = document.getElementById('battle-log');
+    log.innerHTML += `<p>🎉 You defeated the ${enemy.name}!</p>`;
+    gainExperience(75);
     document.getElementById('actions').style.display = 'none';
   } else if (player.hp <= 0) {
     document.getElementById('battle-log').innerHTML += `<p>💀 You have been defeated...</p>`;
@@ -76,6 +78,27 @@ function checkBattleState() {
   updateUI();
 }
 
+function gainExperience(amount) {
+  player.exp += amount;
+  const log = document.getElementById('battle-log');
+  log.innerHTML += `<p>📈 You gained ${amount} XP!</p>`;
+
+  const neededXP = player.level * 100;
+  if (player.exp >= neededXP) {
+    player.exp -= neededXP;
+    player.level++;
+    player.maxHp += 20;
+    player.hp = player.maxHp;
+    player.maxMp += 10;
+    player.mp = player.maxMp;
+    player.str += 2;
+    player.def += 2;
+    player.agi += 1;
+    player.int += 1;
+    log.innerHTML += `<p>🆙 Level Up! You are now Level ${player.level}!</p>`;
+  }
+}
+
 function updateUI() {
   const stats = getPlayerStats(player);
   document.getElementById('player-stats').innerHTML = `
@@ -83,7 +106,8 @@ function updateUI() {
     HP: ${player.hp} / ${player.maxHp} <br>
     MP: ${player.mp} / ${player.maxMp} <br>
     STR: ${player.str} | DEF: ${player.def} <br>
-    AGI: ${player.agi} | INT: ${player.int}
+    AGI: ${player.agi} | INT: ${player.int} <br>
+    XP: ${player.exp} / ${player.level * 100} <br>
   `;
 }
 

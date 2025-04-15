@@ -1,24 +1,26 @@
 // inventory.js
 
 import { player } from './player.js';
-import { saveGame } from './storage.js';
 
 const inventory = {
   potion: 3
 };
 
 export function usePotion() {
-  if (inventory.potion > 0) {
-    const heal = 20;
-    player.stats.hp += heal;
+  if (inventory.potion > 0 && player.stats.hp < 100) {
+    player.stats.hp = Math.min(player.stats.hp + 30, 100);
     inventory.potion--;
-    document.getElementById("battle-log").innerHTML += `<br>You used a potion and healed ${heal} HP!`;
-    saveGame();
+    log(`You used a potion. HP restored to ${player.stats.hp}.`);
   } else {
-    document.getElementById("battle-log").innerHTML += `<br>No potions left!`;
+    log("No potions left or HP already full.");
   }
 }
 
 export function showInventory() {
   return inventory;
+}
+
+function log(message) {
+  const logDiv = document.getElementById("battle-log");
+  logDiv.innerHTML = `<p>${message}</p>` + logDiv.innerHTML;
 }

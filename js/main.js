@@ -12,7 +12,7 @@ function initGame() {
     log(`Welcome back, ${player.name}!`);
   } else {
     const name = prompt("Enter your character's name:");
-    setPlayerName(name || "Hero");
+    setPlayerName(name?.trim() || "Hero");
     log(`Welcome, ${player.name}! Let the adventure begin.`);
   }
 
@@ -35,6 +35,7 @@ function log(message) {
   logDiv.innerHTML = `<p>${message}</p>` + logDiv.innerHTML;
 }
 
+// Event Listeners
 document.getElementById("start-btn").addEventListener("click", () => {
   startBattle();
 });
